@@ -38,7 +38,7 @@ refs.form.addEventListener('submit', async (e) => {
 
     page = 1;
     currentQuery = userValue;
-    refs.loadBtn.classList.add('hidden');
+    refs.loadBtn.classList.add('hidden'); 
 
     refs.imagesContainer.innerHTML = ''; 
     refs.loader.innerHTML = 'Please wait, the images are loading...'; 
@@ -57,10 +57,11 @@ refs.form.addEventListener('submit', async (e) => {
         }
           refs.imagesContainer.innerHTML = createMarkup(images);
           lightbox.refresh();
-          refs.loadBtn.classList.remove('hidden');
 
           if (images.length === 40) {
-            refs.loadBtn.classList.remove('hidden');
+            refs.loadBtn.classList.remove('hidden'); 
+        } else {
+            refs.loadBtn.classList.add('hidden'); 
         }
 
         } catch (error) {
@@ -69,9 +70,10 @@ refs.form.addEventListener('submit', async (e) => {
                 position: 'topRight',
                 message: 'Failed to fetch images. Try again later!'
             });
+      } finally{
+        setTimeout(() => refs.loader.innerHTML = "", 1500);
       }
         
-    refs.loader.innerHTML = "";
     e.target.reset();
 });
 
@@ -92,8 +94,10 @@ refs.loadBtn.addEventListener('click', async ()=>{
             });
             return;
         }  
-        refs.imagesContainer.insertAdjacentHTML('beforeend', createMarkup(images));
-        lightbox.refresh();
+        if (images.length > 0) {
+            refs.imagesContainer.insertAdjacentHTML('beforeend', createMarkup(images));
+            lightbox.refresh();
+        }
 
         const cardHeight = document.querySelector('.img-cont')?.getBoundingClientRect().height || 0;
         window.scrollBy({
@@ -106,7 +110,7 @@ refs.loadBtn.addEventListener('click', async ()=>{
             position: 'topRight',
             message: 'Failed to fetch images. Try again later!'
         })
+    } finally{
+        setTimeout(() => refs.loader.innerHTML = "", 1500);
     }
-
-    refs.loader.innerHTML = "";
 });
