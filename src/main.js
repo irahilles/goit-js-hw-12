@@ -85,6 +85,12 @@ refs.loadBtn.addEventListener('click', async ()=>{
     try {
         const data = await getImage(currentQuery, page);
         const images = data.hits;
+
+        if (images.length > 0) {
+            refs.imagesContainer.insertAdjacentHTML('beforeend', createMarkup(images));
+            lightbox.refresh();
+        }
+        
         if(images.length === 0 || page * 40 >= data.totalHits){
              refs.loadBtn.classList.add('hidden');
             iziToast.show({
@@ -94,10 +100,6 @@ refs.loadBtn.addEventListener('click', async ()=>{
             });
             return;
         }  
-        if (images.length > 0) {
-            refs.imagesContainer.insertAdjacentHTML('beforeend', createMarkup(images));
-            lightbox.refresh();
-        }
 
         const cardHeight = document.querySelector('.img-cont')?.getBoundingClientRect().height || 0;
         window.scrollBy({
